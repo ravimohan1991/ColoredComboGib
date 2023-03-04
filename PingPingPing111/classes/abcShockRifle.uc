@@ -55,8 +55,14 @@ function Projectile ProjectileFire(class<projectile> ProjClass, float ProjSpeed,
 	if ( PlayerOwner != None )
 		PlayerOwner.ClientInstantFlash( -0.4, vect(450, 190, 650));
 
-    // If team == 0 spawn red projectile
-    Tracked = Spawn(RedProjectileClass, , , Start, AdjustedAim);
+    if(Pawn(Owner).PlayerReplicationInfo.Team == 0)
+    {
+        Tracked = Spawn(RedProjectileClass, , , Start, AdjustedAim);
+    }
+    else
+    {
+        Tracked = Spawn(AltProjectileClass, , , Start, AdjustedAim);// judicious use, hehe hehe
+    }
 
 	if ( Level.Game.IsA('DeathMatchPlus') && DeathmatchPlus(Level.Game).bNoviceMode )
 		Tracked = None; //no combo move
