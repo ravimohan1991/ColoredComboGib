@@ -29,5 +29,7 @@ defaultproperties
 {
     Texture=Texture'RedASMDAlt_a00'
     LightHue=0
+    Damage=1000
+    MyDamageType=ShockBall
 }
 

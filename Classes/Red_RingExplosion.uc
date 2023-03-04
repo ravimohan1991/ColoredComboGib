@@ -11,5 +11,4 @@ simulated function SpawnEffects ()
 defaultproperties
 {
     Skin=Texture'redring'
-
 }

@@ -3,6 +3,8 @@ class abcShockRifle extends ShockRifle;
 var class<SuperShockBeam> RedBeamClass;
 var class<SuperShockBeam> BlueBeamClass;
 var class<Projectile> RedProjectileClass;
+var class<Projectile> BlueProjectileClass;
+var class<UT_RingExplosion> RedRingTraceHitExplosionClass;
 
 simulated function PostBeginPlay()
 {
@@ -10,8 +12,47 @@ simulated function PostBeginPlay()
 	BlueBeamClass = class<SuperShockBeam>(DynamicLoadObject("ColoredComboGib.SuperShockBeam_Blue", class'Class'));
 
 	RedProjectileClass = class<Projectile>(DynamicLoadObject("ColoredComboGib.RedShockProj", class'Class'));
+	BlueProjectileClass = class<Projectile>(DynamicLoadObject("ColoredComboGib.cbgproj", class'Class'));
+
+	RedRingTraceHitExplosionClass = class<UT_RingExplosion>(DynamicLoadObject("ColoredComboGib.Red_RingExplosion2", class'Class'));
 
     super.PostBeginPlay();
+}
+
+function ProcessTraceHit(Actor Other, Vector HitLocation, Vector HitNormal, Vector X, Vector Y, Vector Z)
+{
+	local PlayerPawn PlayerOwner;
+
+	if (Other==None)
+	{
+		HitNormal = -X;
+		HitLocation = Owner.Location + X*10000.0;
+	}
+
+	PlayerOwner = PlayerPawn(Owner);
+	if ( PlayerOwner != None )
+		PlayerOwner.ClientInstantFlash( -0.4, vect(450, 190, 650));
+	SpawnEffect(HitLocation, Owner.Location + CalcDrawOffset() + (FireOffset.X + 20) * X + FireOffset.Y * Y + FireOffset.Z * Z);
+
+	if ( ShockProj(Other)!=None )
+	{
+		AmmoType.UseAmmo(2);
+		ShockProj(Other).SuperExplosion();
+	}
+	else
+	{
+	    if(Pawn(Owner).PlayerReplicationInfo.Team == 0)
+	    {
+			Spawn(RedRingTraceHitExplosionClass,,, HitLocation+HitNormal*8,rotator(HitNormal));
+		}
+		else
+		{
+		    Spawn(class'ut_RingExplosion5',,, HitLocation+HitNormal*8,rotator(HitNormal));
+        }
+	}
+
+	if ( (Other != self) && (Other != Owner) && (Other != None) )
+		Other.TakeDamage(HitDamage, Pawn(Owner), HitLocation, 60000.0*X, MyDamageType);
 }
 
 function SpawnEffect(vector HitLocation, vector SmokeLocation)
@@ -61,7 +102,7 @@ function Projectile ProjectileFire(class<projectile> ProjClass, float ProjSpeed,
     }
     else
     {
-        Tracked = Spawn(AltProjectileClass, , , Start, AdjustedAim);// judicious use, hehe hehe
+        Tracked = Spawn(BlueProjectileClass, , , Start, AdjustedAim);// judicious use, from cgzpp22a, hehe hehe
     }
 
 	if ( Level.Game.IsA('DeathMatchPlus') && DeathmatchPlus(Level.Game).bNoviceMode )
