@@ -1,6 +1,15 @@
 //ripped from botpack.arena
 class cbg_Mut1 extends Mutator config(cgzpp22a);
 
+// Import custom textures
+#exec texture IMPORT NAME=BlueColor FILE=Textures\BlueColor.pcx FLAGS=2 MIPS=OFF
+#exec texture IMPORT NAME=BlueSASMD_t3 FILE=Textures\BlueSASMD_t3.pcx FLAGS=2 MIPS=OFF
+#exec texture IMPORT NAME=BlueSASMD_t4 FILE=Textures\BlueSASMD_t4.pcx FLAGS=2 MIPS=OFF
+#exec texture IMPORT NAME=RedColor FILE=Textures\RedColor.pcx FLAGS=2 MIPS=OFF
+#exec texture IMPORT NAME=RedSASMD_t3 FILE=Textures\RedSASMD_t3.pcx FLAGS=2 MIPS=OFF
+#exec texture IMPORT NAME=RedSASMD_t4 FILE=Textures\RedSASMD_t4.pcx FLAGS=2 MIPS=OFF
+
+
 var name WeaponName, AmmoName;
 var string WeaponString, AmmoString;
 var() config bool bAllowJumpBoots;
@@ -25,18 +34,18 @@ function ModifyPlayer(Pawn Other)
 {
 	//log("cbg_Mut1: ModifyPlayer"@Other);
 
-	GiveWeapon( Other, "cgzpp22a.cbg" );
+	GiveWeapon(Other);
 
 	if ( NextMutator != None )
 		NextMutator.ModifyPlayer(Other);
 }
 
-function GiveWeapon(Pawn PlayerPawn, string aClassName )
+function GiveWeapon(Pawn PlayerPawn)
 {
 	local class<Weapon> WeaponClass;
 	local Weapon NewWeapon;
 
-	WeaponClass = class<Weapon>(DynamicLoadObject(aClassName, class'Class'));
+	WeaponClass = class'cbg';
 
 	if( PlayerPawn.FindInventoryType(WeaponClass) != None )
 		return;
@@ -58,6 +67,10 @@ function GiveWeapon(Pawn PlayerPawn, string aClassName )
 		PlayerPawn.PendingWeapon = None;
 		PlayerPawn.Weapon = newWeapon;
 	}
+	else
+	{
+    log("Failed to spawn colored insta");
+    }
 }
 
 

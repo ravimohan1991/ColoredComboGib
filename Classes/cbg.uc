@@ -16,6 +16,23 @@ function AltFire( float Value )
 	}
 }
 
+simulated function PlaySelect()
+{
+	switch (Pawn(Owner).PlayerReplicationInfo.Team) {
+		case 0:
+			MultiSkins[2]=texture'RedSASMD_t3';
+			MultiSkins[3]=texture'RedSASMD_t4';
+		break;
+
+		case 1:
+			MultiSkins[2]=texture'BlueSASMD_t3';
+			MultiSkins[3]=texture'BlueSASMD_t4';
+		break;
+	}
+
+	Super.PlaySelect();
+}
+
 simulated function bool ClientAltFire(float Value)
 {
 	if( !bReduceBall || (Level.TimeSeconds - LastBallTime) > MinSecBetweenBalls )
