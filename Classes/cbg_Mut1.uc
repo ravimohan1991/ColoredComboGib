@@ -8,6 +8,10 @@ class cbg_Mut1 extends Mutator config(cgzpp22a);
 #exec texture IMPORT NAME=RedColor FILE=Textures\RedColor.pcx FLAGS=2 MIPS=OFF
 #exec texture IMPORT NAME=RedSASMD_t3 FILE=Textures\RedSASMD_t3.pcx FLAGS=2 MIPS=OFF
 #exec texture IMPORT NAME=RedSASMD_t4 FILE=Textures\RedSASMD_t4.pcx FLAGS=2 MIPS=OFF
+#exec texture IMPORT NAME=redring FILE=Textures\redring.pcx FLAGS=2 MIPS=OFF
+#exec texture IMPORT NAME=RedShocktT1 FILE=Textures\RedShocktT1.pcx FLAGS=2 MIPS=OFF
+#exec texture IMPORT NAME=RedASMDAlt_a00 FILE=Textures\RedASMDAlt_a00.pcx FLAGS=2 MIPS=OFF
+#exec texture IMPORT NAME=RedASMDEx_a00 FILE=Textures\RedASMDEx_a00.pcx FLAGS=2 MIPS=OFF
 
 
 var name WeaponName, AmmoName;
